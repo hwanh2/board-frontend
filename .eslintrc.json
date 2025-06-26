@@ -1,12 +1,14 @@
 {
   "env": {
     "browser": true,
+    "node": true, // Node.js 환경 추가
     "es2021": true
   },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "plugin:storybook/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {
