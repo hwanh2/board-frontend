@@ -1683,7 +1683,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.7":
+"axios@npm:^1.10.0, axios@npm:^1.6.7":
   version: 1.10.0
   resolution: "axios@npm:1.10.0"
   dependencies:
@@ -1727,6 +1727,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.5.2"
     "@vitest/browser": "npm:^3.2.4"
     "@vitest/coverage-v8": "npm:^3.2.4"
+    axios: "npm:^1.10.0"
     eslint: "npm:^9.29.0"
     eslint-plugin-react-hooks: "npm:^5.2.0"
     eslint-plugin-react-refresh: "npm:^0.4.20"
