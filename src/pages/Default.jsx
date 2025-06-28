@@ -46,9 +46,8 @@ const Default = () => {
             검색
           </button>
           <Link
-            to="/write"
-            className="bg-blue-500/90 text-white px-4 py-1 rounded hover:bg-blue-600/80 transition"
-          >
+            to="/posts/new"
+            className="bg-blue-500/90 text-white px-4 py-1 rounded hover:bg-blue-600/80 transition">
             글쓰기
           </Link>
         </div>
