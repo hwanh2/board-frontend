@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { getPosts } from '../api/postsApi';
+import { Link } from 'react-router-dom';
 
 const Default = () => {
   const [posts, setPosts] = useState([]);
@@ -8,8 +9,8 @@ const Default = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/posts/');
-        setPosts(response.data); // 백엔드 반환값에 따라 수정 필요
+        const data = await getPosts();
+        setPosts(data);
       } catch (error) {
         console.error('게시글을 불러오는데 실패했습니다.', error);
       } finally {
@@ -21,22 +22,87 @@ const Default = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center mt-10">로딩 중...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-lg font-medium">게시글을 불러오는 중입니다...</div>
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-xl mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-4">게시글 목록</h1>
-      <ul className="space-y-2">
-        {posts.map((post) => (
-          <li
-            key={post.id}
-            className="p-3 border rounded hover:bg-gray-100 transition cursor-pointer"
+    <div className="p-8 pl-20">
+      {/* 상단 */}
+      <div className="flex justify-between items-center mb-4">
+        <div className="text-sm text-gray-600">
+          Total {posts.length}건
+        </div>
+        <div className="flex items-center space-x-2">
+          <input
+            type="text"
+            placeholder="검색어를 입력하세요"
+            className="border rounded px-3 py-1 focus:outline-none focus:ring focus:border-blue-300"
+          />
+          <button className="bg-blue-500/90 text-white px-4 py-1 rounded hover:bg-blue-600/80 transition">
+            검색
+          </button>
+          <Link
+            to="/write"
+            className="bg-blue-500/90 text-white px-4 py-1 rounded hover:bg-blue-600/80 transition"
           >
-            {post.title}
-          </li>
-        ))}
-      </ul>
+            글쓰기
+          </Link>
+        </div>
+      </div>
+
+      {/* 테이블 */}
+      <div className="overflow-x-auto bg-white shadow rounded">
+        <table className="min-w-full text-center">
+          <thead className="bg-gray-100 border-t border-gray-400">
+            <tr>
+              <th className="px-4 py-2">번호</th>
+              <th className="px-4 py-2 text-left">제목</th>
+              <th className="px-4 py-2">작성자</th>
+              <th className="px-4 py-2">작성일</th>
+              <th className="px-4 py-2">조회수</th>
+            </tr>
+          </thead>
+          <tbody>
+            {posts.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="py-8 text-gray-500">
+                  게시글이 없습니다. 첫 게시글을 작성해보세요!
+                </td>
+              </tr>
+            ) : (
+              posts.map((post, index) => (
+                <tr
+                  key={post.id}
+                  className="hover:bg-gray-50 transition-colors"
+                >
+                  <td className="px-4 py-2">{posts.length - index}</td>
+                  <td className="px-4 py-2 text-left text-blue-600 hover:underline">
+                    <Link to={`/posts/${post.id}`}>{post.title}</Link>
+                  </td>
+                  <td className="px-4 py-2">{post.author || '익명'}</td>
+                  <td className="px-4 py-2">
+                    {new Date(post.created_at).toLocaleDateString('ko-KR')}
+                  </td>
+                  <td className="px-4 py-2">{post.views}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* 페이지네이션 (임시) */}
+      <div className="flex justify-center mt-4 space-x-2">
+        <button className="px-3 py-1 border rounded text-sm hover:bg-gray-100">처음</button>
+        <button className="px-3 py-1 border rounded text-sm hover:bg-gray-100">1</button>
+        <button className="px-3 py-1 border rounded text-sm hover:bg-gray-100">2</button>
+        <button className="px-3 py-1 border rounded text-sm hover:bg-gray-100">3</button>
+        <button className="px-3 py-1 border rounded text-sm hover:bg-gray-100">맨끝</button>
+      </div>
     </div>
   );
 };
