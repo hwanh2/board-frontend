@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 function Navbar() {
+  const { isLoggedIn, logout } = useAuth();
   return (
     <nav className="flex items-center justify-between h-16 px-6 bg-white shadow fixed top-0 left-80 right-0 z-10">
       {/* 좌측 로고 */}
@@ -34,12 +36,21 @@ function Navbar() {
       7
     </span>
   </button>
-        <Link
-          to="/login"
-          className="bg-blue-600 text-white px-8 py-3 rounded hover:bg-blue-700 transition"
-        >
-          로그인
-        </Link>
+        {isLoggedIn ? (
+          <button
+            onClick={logout}
+            className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-900 transition"
+          >
+            로그아웃
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+          >
+            로그인
+          </Link>
+        )}
       </div>
     </nav>
   );
