@@ -3,7 +3,7 @@ import axiosInstance from '../../api/axios.config';
 import { useAuth } from '../../context/AuthContext';
 
 function LoginModal({ onClose }) {
-  const { login } = useAuth(); 
+  const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,6 +21,7 @@ function LoginModal({ onClose }) {
       setLoading(true);
       setError('');
 
+      // ✅ 로그인 요청 (URL은 실제 로그인 URL로 맞춰야 함)
       const response = await axiosInstance.post('/members/', {
         username,
         password,
@@ -28,15 +29,15 @@ function LoginModal({ onClose }) {
 
       console.log('로그인 성공:', response.data);
 
-      // 선택: 로컬 스토리지에 메시지 보관 (디버깅용)
-      localStorage.setItem('message', response.data.message);
+      const { access } = response.data;
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${access}`;
+      console.log('Bearer 설정 완료:', axiosInstance.defaults.headers.common['Authorization']);
 
-      // 쿠키는 백엔드에서 설정되므로 별도 처리 불필요
-      login();
-      onClose(); // 모달 닫기
+      login();       // context 상태 업데이트 (로그인 처리)
+      onClose();     // 모달 닫기
 
     } catch (err) {
-      console.error(err);
+      console.error('로그인 실패:', err);
       if (err.response?.data?.error) {
         setError(err.response.data.error);
       } else {
