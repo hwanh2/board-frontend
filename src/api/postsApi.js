@@ -21,3 +21,13 @@ export const getPostById = async (postId) => {
   const response = await axiosInstance.get(`/posts/${postId}`);
   return response.data;
 };
+
+export const getPostSummary = async (postId) => {
+  try {
+    const response = await axiosInstance.get(`/posts/${postId}/summary`);
+    return response.data;
+  } catch (error) {
+    console.error('게시글 요약 생성/조회 실패:', error);
+    throw error;
+  }
+};
