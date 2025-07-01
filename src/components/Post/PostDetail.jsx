@@ -44,6 +44,11 @@ const PostDetail = () => {
     }
   };
 
+  const handleSummaryClick = () => {
+    alert('게시글 및 댓글 요약 생성 기능 예정');
+    // 이후 요약 API 연동 시 연결
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -60,8 +65,16 @@ const PostDetail = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-10 bg-white rounded shadow">
-      {/* 게시글 제목 */}
-      <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
+      {/* 게시글 제목 + 요약 버튼 */}
+      <div className="flex items-center justify-between mb-2">
+        <h1 className="text-3xl font-bold">{post.title}</h1>
+        <button
+          onClick={handleSummaryClick}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+        >
+          게시글 및 댓글 요약
+        </button>
+      </div>
 
       {/* 작성자, 작성일, 조회수 */}
       <div className="text-sm text-gray-500 mb-6 border-b pb-4">
